@@ -1,10 +1,11 @@
 ﻿namespace DiceGame;
 
-public class Dealer
+public class Dealer()
 {
 	public int Points { get; set; }
 	public int RollPoints { get; set; }
 	private readonly Random rand = new();
+	public bool HasStopped { get; set; }
 
 	public void PlayTurn()
 	{

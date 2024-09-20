@@ -33,14 +33,12 @@ public class Player
 	/// The logic for when the player plays their turn
 	/// </summary>
 	/// <returns>If the player chooses to end the round</returns>
-	public void PlayTurn(bool canStop = true)
+	public void PlayTurn()
 	{
-		if (canStop)
-			Console.WriteLine("Vill du slå eller stanna?");
-		else
-			Console.WriteLine("Vill du slå?");
+		Console.WriteLine("Vill du slå eller stanna?");
 		var choice = Console.ReadLine();
-		if (choice == "stanna" && canStop)
+		
+		if (choice == "stanna")
 			HasStopped = true;
 		if (choice == "slå")
 		{
