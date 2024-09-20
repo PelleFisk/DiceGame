@@ -16,6 +16,7 @@ public class Game(Player player, Dealer dealer)
 			if (isPlayerTurn && !Player.HasStopped)
 			{
 				Player.PlayTurn();
+				// Hello
 				Dealer.PlayTurn();
 				
 				if (Player.HasStopped)
