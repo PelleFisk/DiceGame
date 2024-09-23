@@ -3,27 +3,18 @@
 public class Dealer()
 {
 	public int Points { get; set; }
-	public int RollPoints { get; set; }
 	private readonly Random rand = new();
 	public bool HasStopped { get; set; }
 
-	public void PlayTurn()
+	public bool ShouldRoll()
 	{
-		if (Points <= 17)
-		{
-			var randNum = rand.Next(1, 7);
-			Points += randNum;
-			RollPoints = randNum;
-		}
+		return Points < 17;
 	}
 
-	public bool HasTwentyOnePoints()
+	public void RollDice()
 	{
-		return Points == 21;
-	}
-
-	public bool HasOverTwentyOnePoints()
-	{
-		return Points > 21;
+		var randNum = rand.Next(1, 7);
+		Points += randNum;
+		Console.WriteLine($"Dealern slog: {randNum}, dealerns totala poäng är: {Points}");
 	}
 }
