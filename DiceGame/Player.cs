@@ -15,12 +15,7 @@ public class Player
 	/// <summary>
 	/// The amount of money the player choose to put in the pot
 	/// </summary>
-	public int CurrentBet { get; set; }
-
-	/// <summary>
-	/// If the player has choosen to stop
-	/// </summary>
-	public bool HasStopped { get; set; }
+	public int Bet { get; set; }
 
 	private readonly Random rand = new();
 
@@ -28,23 +23,43 @@ public class Player
 	/// The logic for when the player plays their turn
 	/// </summary>
 	/// <returns>If the player chooses to end the round</returns>
-	public void RollDice()
+	public void DrawCard()
 	{
-		Console.WriteLine("Vill du slå eller stanna?");
-		var choice = Console.ReadLine();
-		var randNum = rand.Next(1, 7);
-		Points += randNum;
+		var card = rand.Next(1, 14);
+		var cardValue = card > 10 ? 10 : card;
+		Points += cardValue;
+		Console.WriteLine($"Du drog ett kort med värdet: {cardValue}, du har nu {Points} poäng");
 	}
 
 	public bool WantsToRoll()
 	{
-		Console.WriteLine("Vill du slå tärningen eller stanna? (slå/stanna)");
+		Console.WriteLine("Vill du dra ett kort eller stanna? (dra/stanna)");
 		var choice = Console.ReadLine();
-		return choice == "slå";
+		return choice == "dra";
+	}
+
+	public void PlaceBet()
+	{
+		Console.WriteLine($"Du har just nu: {Money} pengar. Hur mycket vill du satsa?");
+		Bet = int.TryParse(Console.ReadLine(), out var amount) ? amount : 0;
+
+		if (Bet > Money || Bet < 0)
+		{
+			Console.WriteLine("Ogiltig satstning. Försök igen!");
+			Bet = int.TryParse(Console.ReadLine(), out amount) ? amount : 0;
+		}
+
+		Money -= Bet;
+	}
+
+	public void WinBet()
+	{
+		Money += Bet * 2;
 	}
 
 	public void Reset()
 	{
 		Points = 0;
+		Bet = 0;
 	}
 }

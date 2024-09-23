@@ -1,23 +1,24 @@
 ﻿namespace DiceGame;
 
-public class Game()
+public class Game(Player player)
 {
-	public Player Player { get; set; } = new();
-	public Dealer Dealer { get; set; } = new();
+	public Player Player { get; } = player;
+	public Dealer Dealer { get; } = new();
 	private bool isPlayerTurn = true;
-	private bool playAgain = true;
-	private int moneyInThePot;
-	private bool shouldSkipLastText;
+	private bool playerStopped;
+	private bool dealerStopped;
 
 	public void GameLoop()
 	{
-		while (playAgain)
+		Player.PlaceBet();
+
+		while (!playerStopped || !dealerStopped)
 		{
-			if (isPlayerTurn)
+			if (isPlayerTurn && !playerStopped)
 			{
 				if (Player.WantsToRoll())
 				{
-					Player.RollDice();
+					Player.DrawCard();
 					if (Player.Points > 21)
 					{
 						Console.WriteLine("Du gick över 21! Dealern har vunnit :(");
@@ -26,25 +27,28 @@ public class Game()
 				}
 				else
 				{
-					isPlayerTurn = false;
+					playerStopped = true;
 				}
 			}
-			else
+			else if (!dealerStopped)
 			{
 				if (Dealer.ShouldRoll())
 				{
-					Dealer.RollDice();
+					Dealer.DrawCard();
 					if (Dealer.Points > 21)
 					{
 						Console.WriteLine("Dealern gick över 21! Du har vunnit.");
+						Player.WinBet();
 						return;
 					}
 				}
 				else
 				{
-					break;
+					dealerStopped = true;
 				}
 			}
+
+			isPlayerTurn = !isPlayerTurn;
 		}
 
 		DecideWinner();
@@ -52,11 +56,13 @@ public class Game()
 
 	public void DecideWinner()
 	{
-		Console.WriteLine("");
+		Console.WriteLine($"Dina poäng: {Player.Points}");
+		Console.WriteLine($"Dealerns poäng: {Dealer.Points}");
 
 		if (Player.Points > Dealer.Points)
 		{
 			Console.WriteLine("Du vann eftersom att du kom närmare 21 än dealern!");
+			Player.WinBet();
 		}
 		else if (Dealer.Points > Player.Points)
 		{
@@ -66,5 +72,10 @@ public class Game()
 		{
 			Console.WriteLine("Dealern vann eftersom att du och dealern fick samma poäng :(");
 		}
+	}
+
+	public void ResetGame()
+	{
+		Player.Reset();
 	}
 }
