@@ -2,12 +2,22 @@
 
 public class Game(Player player)
 {
+	/// <summary>
+	/// The player
+	/// </summary>
 	public Player Player { get; } = player;
+	
+	/// <summary>
+	/// The dealer
+	/// </summary>
 	public Dealer Dealer { get; } = new();
 	private bool isPlayerTurn = true;
 	private bool playerStopped;
 	private bool dealerStopped;
 
+	/// <summary>
+	/// The loop where all the game logic happens
+	/// </summary>
 	public void GameLoop()
 	{
 		Player.PlaceBet();
@@ -54,6 +64,9 @@ public class Game(Player player)
 		DecideWinner();
 	}
 
+	/// <summary>
+	/// The method that decides the winner between the player and dealer
+	/// </summary>
 	public void DecideWinner()
 	{
 		Console.WriteLine($"Dina poäng: {Player.Points}");
@@ -74,6 +87,9 @@ public class Game(Player player)
 		}
 	}
 
+	/// <summary>
+	/// Resets the game
+	/// </summary>
 	public void ResetGame()
 	{
 		Player.Reset();
